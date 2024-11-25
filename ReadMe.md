@@ -1,6 +1,6 @@
-# Cours Streamlit IA - Documentation
+# EduStream - Documentation
 
-Bienvenue sur l'application **Cours Streamlit IA**, une plateforme dédiée à la gestion des cours liés à l'apprentissage automatique et à l'intelligence artificielle. Cette application permet d'ajouter des cours, de les consulter et de gérer les différentes catégories de cours de manière simple et intuitive, le tout en utilisant **Streamlit**. Voici un guide exhaustif pour comprendre comment installer, configurer, et utiliser cette application.
+Bienvenue sur l'application **EduStream**, une plateforme dédiée à la gestion des cours liés à l'apprentissage automatique et à l'intelligence artificielle. Cette application permet d'ajouter des cours, de les consulter et de gérer les différentes catégories de cours de manière simple et intuitive, le tout en utilisant **Streamlit**. Voici un guide exhaustif pour comprendre comment installer, configurer, et utiliser cette application.
 
 ## Table des Matières
 - [Installation](#installation)
@@ -17,7 +17,7 @@ Bienvenue sur l'application **Cours Streamlit IA**, une plateforme dédiée à l
 
 ## Installation
 
-Pour installer et utiliser l'application **Cours Streamlit IA**, suivez les étapes ci-dessous :
+Pour installer et utiliser l'application **EduStream**, suivez les étapes ci-dessous :
 
 1. **Clonez le dépôt GitHub** :
    ```bash
@@ -25,7 +25,7 @@ Pour installer et utiliser l'application **Cours Streamlit IA**, suivez les éta
    ```
 2. **Accédez au répertoire du projet** :
    ```bash
-   cd cours_streamlit_IA
+   cd EduStream
    ```
 3. **Créez un environnement virtuel** (fortement recommandé) :
    ```bash
@@ -59,7 +59,7 @@ Avant de démarrer l'application, vous pouvez personnaliser certains aspects du 
 Voici l'arborescence des fichiers du projet :
 
 ```
-COURS_STREAMLIT_IA/
+EduStream/
 │
 ├── .venv/
 ├── app/
@@ -77,6 +77,7 @@ COURS_STREAMLIT_IA/
 │   ├── metadata_operations.py
 ├── main.py
 ├── ReadMe.md
+├── .gitignore
 └── requirements.txt
 ```
 
@@ -100,15 +101,16 @@ La page **Ajouter un Cours** permet d'ajouter un nouveau cours à la base de don
 - **Titre du cours**
 - **Catégorie**
 - **Contenu du cours** (en utilisant le Markdown pour la mise en forme)
+- **Nom ou Email du Contributeur**
 
 - **Accès** : Sélectionnez "📘 Ajouter un cours" dans la barre de navigation.
-- **Fonctionnalité** : Remplissez le formulaire, puis cliquez sur "Ajouter" pour enregistrer le cours.
+- **Fonctionnalité** : Remplissez le formulaire, puis cliquez sur "Ajouter" pour enregistrer le cours. Un bouton "Générer un résumé automatique" est également disponible pour créer un résumé du contenu.
 
 ### Voir les Cours
 La page **Voir les Cours** affiche une liste de tous les cours disponibles, organisés par catégories.
 
 - **Filtrer par Catégorie** : Un menu déroulant permet de filtrer les cours selon leur catégorie.
-- **Affichage sous forme de Cartes** : Chaque cours est affiché sous forme de **carte** avec un titre, une image, et une description. Cliquez sur un bouton pour ouvrir le cours en plein écran.
+- **Affichage des Cours** : Chaque cours est affiché avec un titre. L'utilisateur peut cliquer sur le titre pour voir le cours en détail et le modifier si nécessaire.
 
 - **Accès** : Sélectionnez "📚 Voir les cours" dans la barre de navigation.
 
@@ -160,4 +162,4 @@ pip install -r requirements.txt
 
 ---
 
-Merci d'utiliser **Cours Streamlit IA** ! N'hésitez pas à nous faire part de vos commentaires et suggestions pour améliorer l'application. 😊
+Merci d'utiliser **EduStream** ! N'hésitez pas à nous faire part de vos commentaires et suggestions pour améliorer l'application. 😊
