@@ -19,7 +19,7 @@ page = st.sidebar.radio(
 
 # Gestion de la navigation à partir de la barre latérale
 if page == "🏠 Accueil":
-    st.title("Bienvenue sur la Plateforme de Cours IA 🎓")
+    st.title("Bienvenue sur EduStream - la Plateforme de Cours IA collaborative de l'école Microsoft by Simplon 🎓")
     st.write("""
     Cette application est conçue pour vous permettre de gérer vos cours de manière simple et intuitive.
     Utilisez le menu de navigation sur la gauche pour accéder aux différentes fonctionnalités.
