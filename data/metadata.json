@@ -1,0 +1,66 @@
+{
+    "validation_crois\u00e9e_en_machine_learning.md": {
+        "title": "Validation Crois\u00e9e en Machine Learning",
+        "category": "Machine Learning",
+        "date_added": "2024-11-16 00:25:40",
+        "comments": [],
+        "rating": []
+    },
+    "scraping_de_donn\u00e9es_sur_les_livres_best-sellers.md": {
+        "title": "Scraping de Donn\u00e9es sur les Livres Best-Sellers",
+        "category": "Scraping",
+        "date_added": "2024-11-16 00:32:25",
+        "comments": [],
+        "rating": []
+    },
+    "application_streamlit_pour_scraper_imdb.md": {
+        "title": "Application Streamlit pour Scraper IMDb",
+        "category": "Scraping",
+        "date_added": "2024-11-16 00:33:58"
+    },
+    "introduction_au_machine_learning.md": {
+        "title": "Introduction au Machine Learning",
+        "category": "Machine Learning",
+        "date_added": "2024-11-16 00:50:17"
+    },
+    "introduction_\u00e0_selenium.md": {
+        "title": "Introduction \u00e0 Selenium",
+        "category": "Scraping",
+        "date_added": "2024-11-16 00:57:42"
+    },
+    "initiation_\u00e0_python_-_partie_ii.md": {
+        "title": "Initiation \u00e0 Python - Partie II",
+        "category": "Python",
+        "date_added": "2024-11-16 01:05:04"
+    },
+    "journalisation_en_python_-_guide_pratique.md": {
+        "title": "Journalisation en Python - Guide Pratique",
+        "category": "Python",
+        "date_added": "2024-11-16 01:09:36"
+    },
+    "initiation_\u00e0_la_programmation_orient\u00e9e_objet_(poo)_en_python_-_partie_iii.md": {
+        "title": "Initiation \u00e0 la Programmation Orient\u00e9e Objet (POO) en Python - Partie III",
+        "category": "Python",
+        "date_added": "2024-11-16 01:15:35"
+    },
+    "introduction_\u00e0_github_actions.md": {
+        "title": "Introduction \u00e0 GitHub Actions",
+        "category": "Github",
+        "date_added": "2024-11-16 01:18:48"
+    },
+    "guide_sur_les_docstrings_en_python.md": {
+        "title": "Guide sur les DocStrings en Python",
+        "category": "Python",
+        "date_added": "2024-11-20 10:18:37"
+    },
+    "envoi_d'e-mails_automatiques_avec_redmail_en_python.md": {
+        "title": "Envoi d'E-mails Automatiques avec Redmail en Python",
+        "category": "Python",
+        "date_added": "2024-11-20 10:20:56"
+    },
+    "initiation_python_-_partie_i.md": {
+        "title": "Initiation Python - Partie I",
+        "category": "Python",
+        "contributor": "Mathieu Soussignan"
+    }
+}
