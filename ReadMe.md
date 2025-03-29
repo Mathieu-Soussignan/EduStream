@@ -1,6 +1,7 @@
-# EduStream - Documentation
 
-Bienvenue sur l'application **EduStream**, une plateforme dédiée à la gestion des cours liés à l'apprentissage automatique et à l'intelligence artificielle. Cette application permet d'ajouter des cours, de les consulter et de gérer les différentes catégories de cours de manière simple et intuitive, le tout en utilisant **Streamlit**. Voici un guide exhaustif pour comprendre comment installer, configurer, et utiliser cette application.
+# Cours Streamlit IA - Documentation
+
+Bienvenue sur l'application **Cours Streamlit IA**, une plateforme dédiée à la gestion des cours liés à l'apprentissage automatique et à l'intelligence artificielle. Cette application permet d'ajouter des cours, de les consulter et de gérer les différentes catégories de cours de manière simple et intuitive, le tout en utilisant **Streamlit**. Voici un guide exhaustif pour comprendre comment installer, configurer, et utiliser cette application.
 
 ## Table des Matières
 - [Installation](#installation)
@@ -14,10 +15,12 @@ Bienvenue sur l'application **EduStream**, une plateforme dédiée à la gestion
 - [Contribution](#contribution)
 - [Déploiement](#déploiement)
 - [Dépendances](#dépendances)
+- [Utilisation avec Docker](#utilisation-avec-docker)
+- [Fonctionnalités Récentes](#fonctionnalités-récentes)
 
 ## Installation
 
-Pour installer et utiliser l'application **EduStream**, suivez les étapes ci-dessous :
+Pour installer et utiliser l'application **Cours Streamlit IA**, suivez les étapes ci-dessous :
 
 1. **Clonez le dépôt GitHub** :
    ```bash
@@ -25,9 +28,9 @@ Pour installer et utiliser l'application **EduStream**, suivez les étapes ci-de
    ```
 2. **Accédez au répertoire du projet** :
    ```bash
-   cd EduStream
+   cd cours_streamlit_IA
    ```
-3. **Créez un environnement virtuel** (fortement recommandé) :
+3. **Créez un environnement virtuel** :
    ```bash
    python -m venv .venv
    ```
@@ -44,7 +47,6 @@ Pour installer et utiliser l'application **EduStream**, suivez les étapes ci-de
    ```bash
    pip install -r requirements.txt
    ```
-
 6. **Lancez l'application** :
    ```bash
    streamlit run main.py
@@ -52,18 +54,13 @@ Pour installer et utiliser l'application **EduStream**, suivez les étapes ci-de
 
 ## Configuration Initiale
 
-Avant de démarrer l'application, vous pouvez personnaliser certains aspects du projet, tels que le thème de l'application Streamlit. Pour ce faire, modifiez le fichier `.streamlit/config.toml` afin de définir les couleurs, les polices, et d'autres aspects du design.
+Modifiez le fichier `.streamlit/config.toml` pour personnaliser le thème, la police et l'affichage global de l'application. Le thème par défaut est en dark mode avec une interface large.
 
 ## Structure du Projet
 
-Voici l'arborescence des fichiers du projet :
-
 ```
-EduStream/
-│
-├── .venv/
+cours_streamlit_IA/
 ├── app/
-│   ├── __init__.py
 │   ├── add_cours.py
 │   ├── manage_categories.py
 │   ├── view_cours.py
@@ -71,95 +68,78 @@ EduStream/
 │   ├── cours/
 │   ├── metadata.json
 ├── utils/
-│   ├── __init__.py
 │   ├── file_operations.py
 │   ├── markdown_renderer.py
 │   ├── metadata_operations.py
 ├── main.py
-├── ReadMe.md
-├── .gitignore
-└── requirements.txt
+├── Dockerfile
+├── docker-compose.yml
+├── requirements.txt
+└── .streamlit/
+    └── config.toml
 ```
-
-### Description des Fichiers Importants
-- **app/** : Contient les modules principaux pour ajouter, afficher et gérer les cours.
-- **data/** : Stocke les données des cours et les métadonnées associées.
-- **utils/** : Contient des fonctions utilitaires pour la manipulation des fichiers, le rendu Markdown, et la gestion des métadonnées.
-- **main.py** : Point d'entrée de l'application Streamlit.
-- **requirements.txt** : Liste des dépendances requises pour l'application.
 
 ## Fonctionnalités
 
 ### Page d'Accueil
-La **page d'accueil** est la première page visible après le lancement de l'application. Elle propose une brève introduction à l'application, les fonctionnalités disponibles, et guide l'utilisateur pour l'utilisation de la navigation.
-
-- **Accès** : Cette page est accessible via la barre de navigation latérale en sélectionnant "🏠 Accueil".
-- **Contenu** : Message de bienvenue, description de l'application, image de présentation.
+Une présentation de l'application, son objectif, et un visuel illustratif.
 
 ### Ajouter un Cours
-La page **Ajouter un Cours** permet d'ajouter un nouveau cours à la base de données. L'utilisateur peut renseigner les informations suivantes :
-- **Titre du cours**
-- **Catégorie**
-- **Contenu du cours** (en utilisant le Markdown pour la mise en forme)
-- **Nom ou Email du Contributeur**
-
-- **Accès** : Sélectionnez "📘 Ajouter un cours" dans la barre de navigation.
-- **Fonctionnalité** : Remplissez le formulaire, puis cliquez sur "Ajouter" pour enregistrer le cours. Un bouton "Générer un résumé automatique" est également disponible pour créer un résumé du contenu.
+- Remplir un formulaire avec le titre, la catégorie, le contenu en Markdown, et le nom du contributeur
+- Prévisualisation du contenu avant sauvegarde
 
 ### Voir les Cours
-La page **Voir les Cours** affiche une liste de tous les cours disponibles, organisés par catégories.
-
-- **Filtrer par Catégorie** : Un menu déroulant permet de filtrer les cours selon leur catégorie.
-- **Affichage des Cours** : Chaque cours est affiché avec un titre. L'utilisateur peut cliquer sur le titre pour voir le cours en détail et le modifier si nécessaire.
-
-- **Accès** : Sélectionnez "📚 Voir les cours" dans la barre de navigation.
+- Affichage sous forme de cartes avec filtres par catégorie et recherche par mot-clé
+- Accès au détail du cours avec un bouton pour le modifier
 
 ### Gérer les Catégories
-La page **Gérer les Catégories** permet d'ajouter, de modifier, ou de supprimer des catégories de cours.
-
-- **Accès** : Sélectionnez "🗂️ Gérer les catégories" dans la barre de navigation.
-- **Fonctionnalité** : Modifiez la liste des catégories selon les besoins des cours.
+- Ajouter ou supprimer des catégories manuellement
 
 ## Contribution
 
-Si vous souhaitez contribuer à l'application, suivez les étapes ci-dessous :
-
-1. **Forkez** le projet sur GitHub.
-2. **Clonez** votre fork sur votre machine locale.
-3. Créez une **branche** pour vos modifications :
-   ```bash
-   git checkout -b ma-branche
-   ```
-4. **Commitez** vos modifications :
-   ```bash
-   git commit -am "Ajout d'une nouvelle fonctionnalité"
-   ```
-5. **Poussez** votre branche :
-   ```bash
-   git push origin ma-branche
-   ```
-6. **Ouvrez une Pull Request** sur le dépôt principal pour soumettre vos modifications.
+1. Fork du projet
+2. Nouvelle branche
+3. Commit
+4. Pull request
 
 ## Déploiement
 
-Pour déployer cette application en ligne, vous pouvez utiliser **Streamlit Cloud** ou d'autres plateformes comme **Heroku** ou **AWS**. Pour Streamlit Cloud :
-1. Connectez-vous à [Streamlit Cloud](https://streamlit.io/cloud).
-2. Liez votre dépôt GitHub au projet.
-3. Configurez les variables d'environnement si nécessaire.
-4. Déployez l'application.
-
-## Dépendances
-
-Les dépendances de l'application sont spécifiées dans `requirements.txt`. Voici quelques-unes des bibliothèques clés :
-- **Streamlit** : Pour l'interface utilisateur.
-- **markdown2** : Pour le rendu Markdown.
-- **watchdog** : Utilisé pour surveiller les modifications dans les fichiers (si nécessaire).
-
-Pour installer toutes les dépendances :
-```bash
-pip install -r requirements.txt
-```
+L'application peut être déployée sur :
+- **Streamlit Cloud**
+- **Docker** via `docker-compose`
+- **Heroku**, **Render**, etc.
 
 ---
 
-Merci d'utiliser **EduStream** ! N'hésitez pas à nous faire part de vos commentaires et suggestions pour améliorer l'application. 😊
+## Dépendances
+
+Les principales :
+- `streamlit`
+- `markdown2`
+- `watchdog`
+
+---
+
+## Utilisation avec Docker
+
+### 1. Prérequis
+- Docker installé
+
+### 2. Lancer l'application
+```bash
+docker-compose up --build
+```
+
+- Accès sur : [http://localhost:8501](http://localhost:8501)
+- Les données sont **persistées** localement dans le dossier `./data`
+
+---
+
+## Fonctionnalités Récentes
+
+- 🔍 Recherche par mot-clé dans les titres de cours
+- 📄 Aperçu avant publication
+- ✏️ Modification des cours
+- 💾 Persistance des données avec Docker
+- 🌑 Dark mode + layout large
+- 🐳 Dockerisation complète et prête à l’emploi

@@ -1,0 +1,30 @@
+services:
+  streamlit:
+    build: .
+    container_name: cours-streamlit-app
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./data:/app/data
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=cours_db
+      - DB_USER=cours_user
+      - DB_PASSWORD=cours_pwd
+
+  db:
+    image: postgres:15
+    container_name: cours-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: cours_db
+      POSTGRES_USER: cours_user
+      POSTGRES_PASSWORD: cours_pwd
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

@@ -1,0 +1,10 @@
+[theme]
+base = "dark"
+primaryColor = "#00D1B2"  # un vert turquoise doux
+backgroundColor = "#0F1117"  # noir bleuté très doux
+secondaryBackgroundColor = "#1C1F26"
+textColor = "#F1F1F1"
+font = "monospace"
+
+[server]
+runOnSave = true
