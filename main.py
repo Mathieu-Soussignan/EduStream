@@ -18,6 +18,10 @@ page = st.sidebar.radio(
     ]
 )
 
+# Réinitialiser l'état de la page lorsque l'utilisateur change d'onglet
+st.session_state.pop("page", None)
+st.session_state.pop("selected_course", None)
+
 # 🏠 Page d'accueil
 if page == "🏠 Accueil":
     st.title("🎓 Bienvenue sur EduStream")
