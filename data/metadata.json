@@ -62,5 +62,20 @@
         "title": "Initiation Python - Partie I",
         "category": "Python",
         "contributor": "Mathieu Soussignan"
+    },
+    "initiation_\u00e0_python_-_partie_i.md": {
+        "title": "Initiation \u00e0 Python - Partie I",
+        "category": "Python",
+        "author": "Mathieu"
+    },
+    "introduction_\u00e0_fastapi.md": {
+        "title": "Introduction \u00e0 FastAPI",
+        "category": "FastAPI",
+        "author": "Mathieu"
+    },
+    "introduction_\u00e0_docker.md": {
+        "title": "Introduction \u00e0 Docker",
+        "category": "Docker",
+        "author": "Mathieu"
     }
 }
