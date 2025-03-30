@@ -1,13 +1,12 @@
 import streamlit as st
-from utils.file_operations import read_course_file
-from utils.metadata_operations import load_metadata
+from utils.supabase_operations import get_all_courses, get_course_by_id
 
 
 def view_courses_page():
     st.title("📚 Voir les cours")
 
-    metadata = load_metadata()
-    if not metadata:
+    cours = get_all_courses()
+    if not cours:
         st.info("Aucun cours disponible.")
         return
 
@@ -15,14 +14,14 @@ def view_courses_page():
     search_term = st.text_input("Rechercher par titre", "").lower()
 
     # 📂 Filtre par catégorie
-    categories = sorted(list(set(course["category"] for course in metadata.values())))
-    selected_category = st.selectbox("Filtrer par catégorie", ["Toutes"] + categories)
+    categories = sorted(list(set(c["categorie"] for c in cours)))
+    selected_category = st.selectbox("Filtrer par catégorie", ["Toutes"] + categories) # noqa
 
     # 🔎 Filtrage des cours
     filtered_courses = [
-        (filename, data) for filename, data in metadata.items()
-        if (selected_category == "Toutes" or data["category"] == selected_category)
-        and search_term in data["title"].lower()
+        c for c in cours
+        if (selected_category == "Toutes" or c["categorie"] == selected_category) # noqa
+        and search_term in c["titre"].lower()
     ]
 
     if not filtered_courses:
@@ -30,14 +29,14 @@ def view_courses_page():
         return
 
     # 🎨 Affichage des cours
-    for filename, data in filtered_courses:
-        with st.expander(f"📘 {data['title']}"):
-            st.markdown(f"**🗂️ Catégorie** : `{data['category']}`")
-            st.markdown(f"**✍️ Contributeur** : `{data.get('contributor', 'Non renseigné')}`")
-            st.markdown(f"**📅 Date** : `{data.get('date', 'Inconnue')}`")
+    for course in filtered_courses:
+        with st.expander(f"📘 {course['titre']}"):
+            st.markdown(f"**🗂️ Catégorie** : `{course['categorie']}`")
+            st.markdown(f"**✍️ Contributeur** : `{course.get('auteur', 'Non renseigné')}`") # noqa
+            st.markdown(f"**📅 Date** : `{course.get('date_creation', 'Inconnue')}`") # noqa
             st.markdown("---")
-            if st.button("📖 Ouvrir le cours", key=filename):
-                st.session_state.selected_course = filename
+            if st.button("📖 Ouvrir le cours", key=course['id']):
+                st.session_state.selected_course = course['id']
                 st.session_state.page = "Voir le cours en détail"
 
 
@@ -46,21 +45,19 @@ def view_course_detail_page():
         st.error("Aucun cours sélectionné.")
         return
 
-    filename = st.session_state.selected_course
-    metadata = load_metadata()
-    data = metadata.get(filename)
+    course_id = st.session_state.selected_course
+    course = get_course_by_id(course_id)
 
-    if data:
-        st.title(data["title"])
-        st.markdown(f"**🗂️ Catégorie** : `{data['category']}`")
-        st.markdown(f"**✍️ Contributeur** : `{data.get('contributor', 'Non renseigné')}`")
-        st.markdown(f"**📅 Date** : `{data.get('date', 'Inconnue')}`")
+    if course:
+        st.title(course["titre"])
+        st.markdown(f"**🗂️ Catégorie** : `{course['categorie']}`")
+        st.markdown(f"**✍️ Contributeur** : `{course.get('auteur', 'Non renseigné')}`") # noqa
+        st.markdown(f"**📅 Date** : `{course.get('date_creation', 'Inconnue')}`") # noqa
         st.markdown("---")
-        content = read_course_file(data["category"], filename)
-        st.markdown(content, unsafe_allow_html=True)
+        st.markdown(course["contenu"], unsafe_allow_html=True)
 
         if st.button("✏️ Modifier le cours"):
             st.session_state.page = "Modifier le cours"
-            st.session_state.selected_course = filename
+            st.session_state.selected_course = course_id
     else:
-        st.error("Erreur lors du chargement du cours.")
+        st.error("Erreur lors du chargement du cours.") # noqa

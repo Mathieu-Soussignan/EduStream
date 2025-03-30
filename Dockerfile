@@ -1,19 +1,18 @@
-# 🔹 1. Image de base légère avec Python
-FROM python:3.10-slim
+# Utilise une image légère de Python
+FROM python:3.11-slim
 
-# 🔹 2. Définir le répertoire de travail
+# Définir le répertoire de travail
 WORKDIR /app
 
-# 🔹 3. Copier les fichiers nécessaires
-COPY requirements.txt .
-COPY . .
+# Copier les fichiers nécessaires
+COPY . /app
 
-# 🔹 4. Installer les dépendances
-RUN pip install --upgrade pip && \
-    pip install -r requirements.txt
+# Installer les dépendances
+RUN pip install --upgrade pip \
+    && pip install -r requirements.txt
 
-# 🔹 5. Exposer le port par défaut de Streamlit
+# Exposer le port utilisé par Streamlit
 EXPOSE 8501
 
-# 🔹 6. Lancer l'application Streamlit
-CMD ["streamlit", "run", "main.py", "--server.port=8501", "--server.enableCORS=false"]
+# Lancer l'application
+CMD ["streamlit", "run", "main.py", "--server.port=8501", "--server.address=0.0.0.0"]

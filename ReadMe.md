@@ -1,145 +1,162 @@
+# 🎓 EduStream – Plateforme collaborative de cours IA
 
-# Cours Streamlit IA - Documentation
-
-Bienvenue sur l'application **Cours Streamlit IA**, une plateforme dédiée à la gestion des cours liés à l'apprentissage automatique et à l'intelligence artificielle. Cette application permet d'ajouter des cours, de les consulter et de gérer les différentes catégories de cours de manière simple et intuitive, le tout en utilisant **Streamlit**. Voici un guide exhaustif pour comprendre comment installer, configurer, et utiliser cette application.
-
-## Table des Matières
-- [Installation](#installation)
-- [Configuration Initiale](#configuration-initiale)
-- [Structure du Projet](#structure-du-projet)
-- [Fonctionnalités](#fonctionnalités)
-  - [Page d'Accueil](#page-daccueil)
-  - [Ajouter un Cours](#ajouter-un-cours)
-  - [Voir les Cours](#voir-les-cours)
-  - [Gérer les Catégories](#gérer-les-catégories)
-- [Contribution](#contribution)
-- [Déploiement](#déploiement)
-- [Dépendances](#dépendances)
-- [Utilisation avec Docker](#utilisation-avec-docker)
-- [Fonctionnalités Récentes](#fonctionnalités-récentes)
-
-## Installation
-
-Pour installer et utiliser l'application **Cours Streamlit IA**, suivez les étapes ci-dessous :
-
-1. **Clonez le dépôt GitHub** :
-   ```bash
-   git clone <URL_DU_DEPOT_GITHUB>
-   ```
-2. **Accédez au répertoire du projet** :
-   ```bash
-   cd cours_streamlit_IA
-   ```
-3. **Créez un environnement virtuel** :
-   ```bash
-   python -m venv .venv
-   ```
-4. **Activez l'environnement virtuel** :
-   - Sur **Windows** :
-     ```bash
-     .venv\Scripts\activate
-     ```
-   - Sur **macOS/Linux** :
-     ```bash
-     source .venv/bin/activate
-     ```
-5. **Installez les dépendances** :
-   ```bash
-   pip install -r requirements.txt
-   ```
-6. **Lancez l'application** :
-   ```bash
-   streamlit run main.py
-   ```
-
-## Configuration Initiale
-
-Modifiez le fichier `.streamlit/config.toml` pour personnaliser le thème, la police et l'affichage global de l'application. Le thème par défaut est en dark mode avec une interface large.
-
-## Structure du Projet
-
-```
-cours_streamlit_IA/
-├── app/
-│   ├── add_cours.py
-│   ├── manage_categories.py
-│   ├── view_cours.py
-├── data/
-│   ├── cours/
-│   ├── metadata.json
-├── utils/
-│   ├── file_operations.py
-│   ├── markdown_renderer.py
-│   ├── metadata_operations.py
-├── main.py
-├── Dockerfile
-├── docker-compose.yml
-├── requirements.txt
-└── .streamlit/
-    └── config.toml
-```
-
-## Fonctionnalités
-
-### Page d'Accueil
-Une présentation de l'application, son objectif, et un visuel illustratif.
-
-### Ajouter un Cours
-- Remplir un formulaire avec le titre, la catégorie, le contenu en Markdown, et le nom du contributeur
-- Prévisualisation du contenu avant sauvegarde
-
-### Voir les Cours
-- Affichage sous forme de cartes avec filtres par catégorie et recherche par mot-clé
-- Accès au détail du cours avec un bouton pour le modifier
-
-### Gérer les Catégories
-- Ajouter ou supprimer des catégories manuellement
-
-## Contribution
-
-1. Fork du projet
-2. Nouvelle branche
-3. Commit
-4. Pull request
-
-## Déploiement
-
-L'application peut être déployée sur :
-- **Streamlit Cloud**
-- **Docker** via `docker-compose`
-- **Heroku**, **Render**, etc.
+**EduStream** est une application Streamlit pensée pour les étudiants en data et IA, afin de centraliser, partager et modifier les cours facilement.  
+📚 Ajoute tes cours, consulte ceux de ta promo, gère les catégories, le tout dans une interface moderne et collaborative.
 
 ---
 
-## Dépendances
+## 🧭 Sommaire
 
-Les principales :
-- `streamlit`
-- `markdown2`
-- `watchdog`
+- [🚀 Installation locale](#-installation-locale)
+- [🐳 Utilisation avec Docker](#-utilisation-avec-docker)
+- [📂 Structure du projet](#-structure-du-projet)
+- [✨ Fonctionnalités](#-fonctionnalités)
+- [🧑‍💻 Contribution](#-contribution)
+- [☁️ Déploiement](#-déploiement)
+- [📦 Dépendances](#-dépendances)
 
 ---
 
-## Utilisation avec Docker
+## 🚀 Installation locale
 
-### 1. Prérequis
-- Docker installé
+### 1. Clone du repo
+```bash
+git clone https://github.com/TON_USER/edustream.git
+cd edustream
+```
 
-### 2. Lancer l'application
+### 2. Création de l'environnement virtuel
+```bash
+python -m venv .venv
+source .venv/bin/activate  # ou .venv\Scripts\activate sous Windows
+```
+
+### 3. Installation des dépendances
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Lancement de l’application
+```bash
+streamlit run main.py
+```
+
+---
+
+## 🐳 Utilisation avec Docker
+
+### 1. Lancement avec Docker Compose
 ```bash
 docker-compose up --build
 ```
 
-- Accès sur : [http://localhost:8501](http://localhost:8501)
-- Les données sont **persistées** localement dans le dossier `./data`
+> Accès à l’app : [http://localhost:8501](http://localhost:8501)
+
+### 2. Où sont stockées les données ?
+Tous les cours et fichiers sont persistés dans le dossier local `./data`.
 
 ---
 
-## Fonctionnalités Récentes
+## 📂 Structure du projet
 
-- 🔍 Recherche par mot-clé dans les titres de cours
-- 📄 Aperçu avant publication
-- ✏️ Modification des cours
-- 💾 Persistance des données avec Docker
-- 🌑 Dark mode + layout large
-- 🐳 Dockerisation complète et prête à l’emploi
+```
+edustream/
+├── app/
+│   ├── add_cours.py              # Ajout et modification de cours
+│   ├── manage_categories.py      # Gestion des catégories
+│   ├── view_cours.py             # Affichage et filtrage des cours
+│   └── auth.py                   # (En option) Authentification Supabase
+├── utils/
+│   ├── file_operations.py        # Lecture/écriture fichiers cours
+│   ├── metadata_operations.py    # Manipulation des métadonnées
+│   └── markdown_renderer.py      # Rendu du markdown
+├── data/
+│   ├── cours/                    # Contenu des cours (fichiers Markdown)
+│   └── metadata.json             # Infos sur chaque cours
+├── assets/
+│   └── home_ai.jpg               # Image d'accueil
+├── main.py                       # Point d’entrée de l’application
+├── Dockerfile
+├── docker-compose.yml
+├── requirements.txt
+└── .streamlit/
+    └── config.toml               # Thème et config globale
+```
+
+---
+
+## ✨ Fonctionnalités
+
+### 🏠 Page d’Accueil
+- Vue d’introduction
+- Objectif de la plateforme
+- Image illustrative
+
+### 📘 Ajouter un cours
+- Formulaire avec :
+  - Titre
+  - Catégorie
+  - Contenu en Markdown
+  - Nom/email du contributeur
+- ✅ **Aperçu en temps réel**
+- 📅 Sauvegarde automatique du fichier et des métadonnées
+
+### 📚 Voir les cours
+- 🔎 **Recherche par mot-clé**
+- 📁 Filtrage par catégorie
+- 📄 Accès aux détails d’un cours
+- ✏️ **Bouton de modification rapide**
+
+### 🗂️ Gérer les catégories
+- Ajout/suppression de catégories utilisées pour organiser les cours
+
+---
+
+## 🧑‍💻 Contribution
+
+### Étapes pour contribuer :
+1. Fork du repo
+2. Création d’une branche :
+   ```bash
+   git checkout -b ma-branche
+   ```
+3. Commit :
+   ```bash
+   git commit -m "✨ Ajout fonctionnalité de recherche"
+   ```
+4. Push :
+   ```bash
+   git push origin ma-branche
+   ```
+5. Ouvre une **Pull Request**
+
+---
+
+## ☁️ Déploiement
+
+L'application peut être facilement déployée via :
+- **Streamlit Community Cloud**
+- **Render / Heroku / Railway**
+- **Docker (recommandé pour usage local collaboratif)**
+
+---
+
+## 📦 Dépendances principales
+
+- `streamlit` – UI simple et interactive
+- `markdown2` – Rendu Markdown
+- `watchdog` – Suivi de fichiers (facultatif)
+- `python-dotenv` – Chargement des variables d’environnement
+
+---
+
+## 🚧 Fonctionnalités prévues / à réactiver
+- 🔐 Authentification via Supabase (GitHub / Email)
+- 🤖 Résumé automatique avec IA
+- 👤 Page profil collaborateur
+
+---
+
+## 💬 Contact
+Tu veux proposer des idées ou aider à améliorer l’app ?  
+**Ping moi sur Discord !** 👉 _@mathieu_

@@ -1,56 +1,31 @@
-
 import streamlit as st
-import os
-from utils.metadata_operations import load_metadata, save_metadata
+from utils.supabase_operations import get_all_categories, add_category_to_db, delete_category_from_db # noqa
 
-DATA_PATH = "data/cours"
 
 def manage_categories_page():
-    st.title("Gérer les catégories")
+    st.title("🗂️ Gérer les catégories")
 
-    # Charger les métadonnées existantes
-    metadata = load_metadata()
-    existing_categories = list(set(data["category"] for data in metadata.values()))
+    # Afficher les catégories depuis Supabase
+    categories = get_all_categories()
 
-    # Afficher les catégories existantes
     st.subheader("Catégories existantes")
-    if existing_categories:
-        for category in existing_categories:
-            st.text(category)
+    if not categories:
+        st.info("Aucune catégorie enregistrée.")
     else:
-        st.info("Aucune catégorie trouvée.")
+        for cat in categories:
+            col1, col2 = st.columns([0.8, 0.2])
+            col1.markdown(f"- `{cat['nom']}`")
+            if col2.button("❌ Supprimer", key=f"delete_{cat['id']}"):
+                delete_category_from_db(cat['id'])
+                st.experimental_rerun()
 
-    # Ajouter une nouvelle catégorie
-    st.subheader("Ajouter une catégorie")
+    st.subheader("Ajouter une nouvelle catégorie")
     new_category = st.text_input("Nom de la nouvelle catégorie")
 
-    if st.button("Ajouter une catégorie"):
-        if new_category and new_category not in existing_categories:
-            category_path = os.path.join(DATA_PATH, new_category)
-            os.makedirs(category_path, exist_ok=True)
-            st.success(f"La catégorie '{new_category}' a été ajoutée.")
+    if st.button("➕ Ajouter la catégorie"):
+        if not new_category:
+            st.warning("Merci de renseigner un nom de catégorie.")
         else:
-            st.error("Cette catégorie existe déjà ou le champ est vide.")
-
-    # Supprimer une catégorie existante
-    st.subheader("Supprimer une catégorie")
-    category_to_delete = st.selectbox("Choisir une catégorie à supprimer", existing_categories)
-
-    if st.button("Supprimer la catégorie"):
-        if category_to_delete:
-            # Supprimer le dossier et ses fichiers
-            category_path = os.path.join(DATA_PATH, category_to_delete)
-            if os.path.exists(category_path):
-                for file in os.listdir(category_path):
-                    os.remove(os.path.join(category_path, file))
-                os.rmdir(category_path)
-
-            # Mettre à jour les métadonnées
-            metadata = {
-                k: v for k, v in metadata.items() if v["category"] != category_to_delete
-            }
-            save_metadata(metadata)
-
-            st.success(f"La catégorie '{category_to_delete}' a été supprimée.")
-        else:
-            st.error("Aucune catégorie sélectionnée.")
+            add_category_to_db(new_category)
+            st.success("Catégorie ajoutée avec succès !")
+            st.experimental_rerun() # noqa

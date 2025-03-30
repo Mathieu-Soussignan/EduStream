@@ -1,12 +1,12 @@
+# ✅ La config DOIT être la première commande Streamlit
 import streamlit as st
+st.set_page_config(page_title="EduStream IA", layout="wide")
+
 from app.add_cours import add_course_page
 from app.view_cours import view_courses_page, view_course_detail_page
 from app.manage_categories import manage_categories_page
 
-# 🌐 Configuration globale
-st.set_page_config(page_title="EduStream IA", layout="wide")
-
-# 📌 Barre latérale
+# 📌 Barre latérale de navigation
 st.sidebar.title("🧭 Navigation")
 page = st.sidebar.radio(
     "Aller à",
@@ -18,7 +18,7 @@ page = st.sidebar.radio(
     ]
 )
 
-# Réinitialiser l'état de la page lorsque l'utilisateur change d'onglet
+# Réinitialiser certains états
 st.session_state.pop("page", None)
 st.session_state.pop("selected_course", None)
 
@@ -28,7 +28,6 @@ if page == "🏠 Accueil":
     st.subheader("La plateforme de cours IA collaborative de l’école Microsoft by Simplon")
 
     col1, col2 = st.columns([2, 3])
-
     with col1:
         st.markdown("""
         👋 Cette application te permet :
