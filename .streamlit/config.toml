@@ -7,4 +7,5 @@ textColor = "#F1F1F1"
 font = "monospace"
 
 [server]
-runOnSave = true
+runOnSave = false
+enableWatchdog = false

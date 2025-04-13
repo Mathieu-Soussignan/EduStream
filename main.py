@@ -1,4 +1,6 @@
 # ✅ La config DOIT être la première commande Streamlit
+import os
+os.environ["PYTORCH_JIT"] = "0"
 import streamlit as st
 st.set_page_config(page_title="EduStream IA", layout="wide")
 

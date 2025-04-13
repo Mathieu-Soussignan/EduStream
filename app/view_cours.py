@@ -1,5 +1,6 @@
 import streamlit as st
 from utils.supabase_operations import get_all_courses, get_course_by_id
+from utils import ia_summary_agent  # ✅ Seul import IA maintenant
 
 
 def view_courses_page():
@@ -10,37 +11,37 @@ def view_courses_page():
         st.info("Aucun cours disponible.")
         return
 
-    # 🔍 Barre de recherche
     search_term = st.text_input("Rechercher par titre", "").lower()
 
-    # 📂 Filtre par catégorie
-    categories = sorted(list(set(c["categorie"] for c in cours)))
-    selected_category = st.selectbox("Filtrer par catégorie", ["Toutes"] + categories) # noqa
+    categories = sorted(list(set(
+        c.get("categorie", "Non classé") for c in cours if isinstance(c, dict)
+    )))
+    selected_category = st.selectbox("Filtrer par catégorie", ["Toutes"] + categories)
 
-    # 🔎 Filtrage des cours
     filtered_courses = [
         c for c in cours
-        if (selected_category == "Toutes" or c["categorie"] == selected_category) # noqa
-        and search_term in c["titre"].lower()
+        if isinstance(c, dict)
+        and (selected_category == "Toutes" or c.get("categorie") == selected_category)
+        and search_term in c.get("titre", "").lower()
     ]
 
     if not filtered_courses:
         st.warning("Aucun cours trouvé.")
         return
 
-    # 🎨 Affichage des cours
     for course in filtered_courses:
         with st.expander(f"📘 {course['titre']}"):
-            st.markdown(f"**🗂️ Catégorie** : `{course['categorie']}`")
-            st.markdown(f"**✍️ Contributeur** : `{course.get('auteur', 'Non renseigné')}`") # noqa
-            st.markdown(f"**📅 Date** : `{course.get('date_creation', 'Inconnue')}`") # noqa
+            st.markdown(f"**🗂️ Catégorie** : `{course.get('categorie', 'Non classé')}`")
+            st.markdown(f"**✍️ Contributeur** : `{course.get('auteur', 'Non renseigné')}`")
+            st.markdown(f"**📅 Date** : `{course.get('date_creation', 'Inconnue')}`")
             st.markdown("---")
             if st.button("📖 Ouvrir le cours", key=course['id']):
+                print("🔗 Accès au détail du cours :", course['titre'])
                 st.session_state.selected_course = course['id']
                 st.session_state.page = "Voir le cours en détail"
 
-
 def view_course_detail_page():
+    print("🚀 Chargement de la page détail du cours")
     if "selected_course" not in st.session_state:
         st.error("Aucun cours sélectionné.")
         return
@@ -50,14 +51,28 @@ def view_course_detail_page():
 
     if course:
         st.title(course["titre"])
-        st.markdown(f"**🗂️ Catégorie** : `{course['categorie']}`")
-        st.markdown(f"**✍️ Contributeur** : `{course.get('auteur', 'Non renseigné')}`") # noqa
-        st.markdown(f"**📅 Date** : `{course.get('date_creation', 'Inconnue')}`") # noqa
+        st.markdown(f"**🗂️ Catégorie** : `{course.get('categorie', 'Non classé')}`")
+        st.markdown(f"**✍️ Contributeur** : `{course.get('auteur', 'Non renseigné')}`")
+        st.markdown(f"**📅 Date** : `{course.get('date_creation', 'Inconnue')}`")
         st.markdown("---")
         st.markdown(course["contenu"], unsafe_allow_html=True)
+
+        print(f"🧪 Longueur du contenu : {len(course['contenu'].strip())}")
+
+        if len(course["contenu"].strip()) > 80:
+            if st.button("🧠 Générer un résumé automatique"):
+                print("🧠 Bouton de génération cliqué !")
+                with st.spinner("Chargement du modèle et génération du résumé..."):
+                    model = ia_summary_agent.load_summary_model()
+                    summary = ia_summary_agent.summarize(course["contenu"], model)
+                    print("📝 Résumé généré :", summary)
+                    st.markdown("### 📝 Résumé généré par l'IA :")
+                    st.success(summary)
+        else:
+            st.info("📄 Le contenu est trop court pour être résumé automatiquement.")
 
         if st.button("✏️ Modifier le cours"):
             st.session_state.page = "Modifier le cours"
             st.session_state.selected_course = course_id
     else:
-        st.error("Erreur lors du chargement du cours.") # noqa
+        st.error("Erreur lors du chargement du cours.")
