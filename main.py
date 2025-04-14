@@ -1,14 +1,30 @@
 # ✅ La config DOIT être la première commande Streamlit
 import os
 os.environ["PYTORCH_JIT"] = "0"
-import streamlit as st
-st.set_page_config(page_title="EduStream IA", layout="wide")
 
+import streamlit as st
 from app.add_cours import add_course_page
 from app.view_cours import view_courses_page, view_course_detail_page
 from app.manage_categories import manage_categories_page
+from app.auth_supabase import login_page, logout, check_session
 
-# 📌 Barre latérale de navigation
+# ✅ Configuration de la page
+st.set_page_config(page_title="EduStream IA", layout="wide")
+
+# 🔐 Authentification Supabase
+if not check_session():
+    login_page()
+    st.stop()
+
+# ✅ Header utilisateur connecté
+user = st.session_state.get("user")
+st.sidebar.markdown(f"👤 Connecté : `{user.email}`")
+
+# 🚪 Déconnexion
+if st.sidebar.button("🚪 Se déconnecter"):
+    logout()
+
+# 📌 Menu de navigation
 st.sidebar.title("🧭 Navigation")
 page = st.sidebar.radio(
     "Aller à",
@@ -20,11 +36,11 @@ page = st.sidebar.radio(
     ]
 )
 
-# Réinitialiser certains états
+# 🧼 Nettoyage des états dynamiques
 st.session_state.pop("page", None)
 st.session_state.pop("selected_course", None)
 
-# 🏠 Page d'accueil
+# === Pages principales ===
 if page == "🏠 Accueil":
     st.title("🎓 Bienvenue sur EduStream")
     st.subheader("La plateforme de cours IA collaborative de l’école Microsoft by Simplon")
@@ -46,19 +62,16 @@ if page == "🏠 Accueil":
     st.divider()
     st.info("💡 N’oublie pas de renseigner ton nom/email quand tu ajoutes un cours !")
 
-# 📘 Ajout de cours
 elif page == "📘 Ajouter un cours":
     add_course_page()
 
-# 📚 Consultation des cours
 elif page == "📚 Voir les cours":
     view_courses_page()
 
-# 🗂️ Gestion des catégories
 elif page == "🗂️ Gérer les catégories":
     manage_categories_page()
 
-# ⚙️ Pages dynamiques (via bouton interne)
+# === Pages dynamiques internes ===
 if "page" in st.session_state:
     if st.session_state.page == "Voir le cours en détail":
         view_course_detail_page()
