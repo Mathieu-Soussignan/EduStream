@@ -4,3 +4,4 @@ test.py
 .env
 archives/
 reminder_ping_supabase.py
+cron_rappel.log
