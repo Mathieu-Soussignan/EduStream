@@ -1,60 +1,99 @@
 import os
 from dotenv import load_dotenv
-from supabase import create_client
 import streamlit as st
+from supabase import create_client
 
-# Charger les variables d’environnement
+# ── ENV & CLIENT ───────────────────────────────────────────────────────────
 load_dotenv()
-
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
+SITE_URL     = os.getenv("SITE_URL", "http://localhost:8501")
 
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
-
-# 🔐 PAGE DE LOGIN
-def login_page():
+# ── PAGE LOGIN / SIGNUP ────────────────────────────────────────────────────
+def login_page() -> None:
     st.title("🔐 Connexion à EduStream")
-    tab1, tab2 = st.tabs(["Connexion", "Créer un compte"])
+    tab_login, tab_signup = st.tabs(["Connexion", "Créer un compte"])
 
-    # Connexion
-    with tab1:
-        email = st.text_input("Email", key="login_email")
-        password = st.text_input("Mot de passe", type="password", key="login_password")
+    # ── Connexion ──────────────────────────────────────────────────────────
+    with tab_login:
+        email    = st.text_input("Email", key="login_email")
+        password = st.text_input("Mot de passe", type="password", key="login_pwd")
 
         if st.button("Se connecter"):
             try:
-                result = supabase.auth.sign_in_with_password({"email": email, "password": password})
-                if result:
-                    st.session_state.authenticated = True
-                    st.session_state.user = result.user
-                    st.session_state.token = result.session.access_token
-                    st.success("Connexion réussie ✅")
-                    st.rerun()
-            except Exception as e:
-                st.error("❌ Connexion échouée : " + str(e))
+                result = supabase.auth.sign_in_with_password(
+                    {"email": email, "password": password}
+                )
 
-    # Création de compte
-    with tab2:
+                # 1️⃣  Vérif e‑mail confirmé
+                if not result.user.email_confirmed_at:
+                    st.warning("📧 Confirme d’abord ton e‑mail.")
+                    return
+
+                # 2️⃣  Stock session auth
+                st.session_state.authenticated = True
+                st.session_state.user          = result.user
+                st.session_state.token         = result.session.access_token
+
+                # 3️⃣  Rôle & profil (robuste)
+                resp = (
+                    supabase.table("profiles")
+                    .select("role, display_name, avatar_url")
+                    .eq("id", result.user.id)
+                    .execute()
+                )
+                rows = resp.data or []
+
+                if rows:
+                    profile = rows[0]
+                else:       # crée la ligne si absente
+                    profile = {
+                        "id":   result.user.id,
+                        "role": "user",
+                        "display_name": "",
+                        "avatar_url": "",
+                    }
+                    supabase.table("profiles").insert(profile).execute()
+
+                st.session_state.user_role     = profile["role"]
+                st.session_state.display_name  = profile.get("display_name", "")
+                st.session_state.avatar_url    = profile.get("avatar_url", "")
+
+                st.success("Connexion réussie ✅")
+                st.rerun()
+
+            except Exception as e:
+                st.error(f"❌ Connexion échouée : {e}")
+
+    # ── Création de compte ────────────────────────────────────────────────
+    with tab_signup:
         email = st.text_input("Email", key="signup_email")
-        password = st.text_input("Mot de passe", type="password", key="signup_password")
+        pwd   = st.text_input("Mot de passe", type="password", key="signup_pwd")
 
         if st.button("Créer un compte"):
             try:
-                result = supabase.auth.sign_up({"email": email, "password": password})
-                st.success("✅ Compte créé ! Vérifie ton email pour confirmer l'inscription.")
+                supabase.auth.sign_up(
+                    {
+                        "email": email,
+                        "password": pwd,
+                        "options": {
+                            "email_redirect_to": f"{SITE_URL}/?confirm",
+                        },
+                    }
+                )
+                st.session_state.pending_confirmation = True
+                st.success("✅ Compte créé ! Vérifie ta boîte mail.")
             except Exception as e:
-                st.error("❌ Erreur lors de l'inscription : " + str(e))
+                st.error(f"❌ Erreur d'inscription : {e}")
 
-
-# 🔓 Déconnexion
-def logout():
+# ── LOGOUT ────────────────────────────────────────────────────────────────
+def logout() -> None:
     for key in ["authenticated", "user", "token"]:
-        if key in st.session_state:
-            del st.session_state[key]
+        st.session_state.pop(key, None)
     st.rerun()
 
-
-# ✅ Vérification de session
-def check_session():
+# ── CHECK SESSION ─────────────────────────────────────────────────────────
+def check_session() -> bool:
     return st.session_state.get("authenticated", False)

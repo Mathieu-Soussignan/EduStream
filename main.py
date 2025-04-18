@@ -3,28 +3,50 @@ import os
 os.environ["PYTORCH_JIT"] = "0"
 
 import streamlit as st
+
 from app.add_cours import add_course_page
 from app.view_cours import view_courses_page, view_course_detail_page
 from app.manage_categories import manage_categories_page
 from app.auth_supabase import login_page, logout, check_session
+from app.profile_page import profile_page
 
-# ✅ Configuration de la page
+# ────────────────────────────────────────────────────────────────────────────────
+# CONFIG STREAMLIT
+# ────────────────────────────────────────────────────────────────────────────────
 st.set_page_config(page_title="EduStream IA", layout="wide")
 
-# 🔐 Authentification Supabase
+# ────────────────────────────────────────────────────────────────────────────────
+# AUTH
+# ────────────────────────────────────────────────────────────────────────────────
 if not check_session():
+    # Cas particulier : l’utilisateur vient de s’inscrire mais n’a pas confirmé
+    if st.session_state.get("pending_confirmation"):
+        st.info(
+            "📧 Un e‑mail de confirmation t’a été envoyé. "
+            "Clique sur le lien puis connecte‑toi."
+        )
+
+    # On affiche la page login/signup
     login_page()
     st.stop()
 
-# ✅ Header utilisateur connecté
+# ────────────────────────────────────────────────────────────────────────────────
+# UTILISATEUR CONNECTÉ
+# ────────────────────────────────────────────────────────────────────────────────
 user = st.session_state.get("user")
-st.sidebar.markdown(f"👤 Connecté : `{user.email}`")
+user_role = st.session_state.get("user_role", "user")
 
-# 🚪 Déconnexion
+st.sidebar.markdown(
+    f"👤 **{user.email}**  \n"
+    f"🔑 rôle : **{user_role}**"
+)
+
 if st.sidebar.button("🚪 Se déconnecter"):
     logout()
 
-# 📌 Menu de navigation
+# ────────────────────────────────────────────────────────────────────────────────
+# NAVIGATION
+# ────────────────────────────────────────────────────────────────────────────────
 st.sidebar.title("🧭 Navigation")
 page = st.sidebar.radio(
     "Aller à",
@@ -33,29 +55,34 @@ page = st.sidebar.radio(
         "📘 Ajouter un cours",
         "📚 Voir les cours",
         "🗂️ Gérer les catégories",
-    ]
+        "👤 Profil collaborateur",
+    ],
 )
 
-# 🧼 Nettoyage des états dynamiques
+# Réinitialisation d’éventuels états internes
 st.session_state.pop("page", None)
 st.session_state.pop("selected_course", None)
 
-# === Pages principales ===
+# ────────────────────────────────────────────────────────────────────────────────
+# PAGES PRINCIPALES
+# ────────────────────────────────────────────────────────────────────────────────
 if page == "🏠 Accueil":
     st.title("🎓 Bienvenue sur EduStream")
     st.subheader("La plateforme de cours IA collaborative de l’école Microsoft by Simplon")
 
     col1, col2 = st.columns([2, 3])
     with col1:
-        st.markdown("""
-        👋 Cette application te permet :
-        - 📘 d’**ajouter** tes cours
-        - 📚 de **consulter** ceux de ta promo
-        - 🛠️ de **modifier** les contenus
-        - 🗂️ de **gérer les catégories**
+        st.markdown(
+            """
+            👋 Cette application te permet :
+            - 📘 d’**ajouter** tes cours
+            - 📚 de **consulter** ceux de ta promo
+            - 🛠️ de **modifier** les contenus
+            - 🗂️ de **gérer les catégories**
 
-        > 🤝 Objectif : centraliser notre apprentissage et progresser ensemble.
-        """)
+            > 🤝 Objectif : centraliser notre apprentissage et progresser ensemble.
+            """
+        )
     with col2:
         st.image("./assets/home_ai.jpg", use_container_width=True)
 
@@ -70,8 +97,12 @@ elif page == "📚 Voir les cours":
 
 elif page == "🗂️ Gérer les catégories":
     manage_categories_page()
+elif page == "👤 Profil collaborateur":
+    profile_page()
 
-# === Pages dynamiques internes ===
+# ────────────────────────────────────────────────────────────────────────────────
+# PAGES DYNAMIQUES INTERNES
+# ────────────────────────────────────────────────────────────────────────────────
 if "page" in st.session_state:
     if st.session_state.page == "Voir le cours en détail":
         view_course_detail_page()
