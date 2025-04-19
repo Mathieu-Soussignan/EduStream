@@ -36,10 +36,20 @@ source .venv/bin/activate  # ou .venv\Scripts\activate sous Windows
 pip install -r requirements.txt
 ```
 
-### 4. Lancement de l’application
+### 4. Créer un fichier `.env`
+Crée un fichier `.env` à la racine du projet et colle ceci :
+```env
+SUPABASE_URL=https://...supabase.co
+SUPABASE_ANON_KEY=eyJ...
+SUPABASE_SERVICE_ROLE_KEY=eyJ...
+```
+Ces infos sont disponibles dans l’onglet **API > Settings** de ton projet Supabase.
+
+### 5. Lancement de l’application
 ```bash
 streamlit run main.py
 ```
+> L’application s’ouvre dans [http://localhost:8501](http://localhost:8501)
 
 ---
 
@@ -52,7 +62,10 @@ docker-compose up --build
 
 > Accès à l’app : [http://localhost:8501](http://localhost:8501)
 
-### 2. Données persistées
+### 2. Variables d’environnement
+Les variables d’environnement `.env` sont automatiquement prises en compte.
+
+### 3. Données persistées
 - Les **cours** sont stockés dans Supabase (table `courses`).
 - Les **profils utilisateurs** sont dans la table `profiles`.
 - Les **avatars** sont sauvegardés dans le bucket `avatars` de Supabase Storage.
@@ -63,24 +76,35 @@ docker-compose up --build
 
 ```
 edustream/
-├── app/
-│   ├── add_cours.py              # Ajout et modification de cours
-│   ├── manage_categories.py      # Gestion des catégories
-│   ├── view_cours.py             # Affichage et détail des cours
-│   └── profile_page.py           # Page profil collaborateur
-├── utils/
-│   ├── supabase_client.py        # Connexion Supabase et clients API
-│   └── profile_helper.py         # Fonctions de manipulation des profils
-├── tests/                        # Tests unitaires Pytest
-├── assets/
-│   └── home_ai.jpg               # Image d'accueil
-├── .env                          # Clés Supabase locales
-├── main.py                       # Entrée principale de l'app Streamlit
-├── requirements.txt
+├── .github/                     # github workflows
+│   ├── workflows/
+│   │   └── ci.yml
+├── app/                       # Pages principales Streamlit
+│   ├── add_cours.py
+│   ├── auth_supabase.py
+│   ├── login_page.py
+│   ├── manage_categories.py
+│   ├── profile_page.py
+│   ├── view_cours.py
+├── assets/                    # Visuels de l’app
+│   │   └── home_ai.jpg
+├── data/                     # Données des cours
+├── tests/                     # Tests unitaires (pytest)
+├── utils/                     # Clients Supabase et fonctions utilitaires
+│   ├── file_operations.py
+│   └── ia_summary_agent.py
+│   └── ia_summary_utils.py
+│   └── markdown_renderer.py
+│   ├── metadata_operations.py
+│   ├── supabase_client.py
+│   ├── supabase_operations.py
+├── .env                       # Clés Supabase
+├── main.py                    # Point d’entrée Streamlit
 ├── Dockerfile
 ├── docker-compose.yml
+├── requirements.txt
 └── .streamlit/
-    └── config.toml            # Thème et config UI Streamlit
+    └── config.toml            # Thème & config UI Streamlit
 ```
 
 ---
@@ -112,6 +136,83 @@ edustream/
 
 ---
 
+## ✨ Fonctionnalités principales
+
+### 🔐 Authentification (Supabase)
+- Inscription / Connexion par email
+- Authentification via JWT Supabase
+- Gestion de session sécurisée avec `st.session_state`
+
+### 📘 Ajout de cours
+- Éditeur Markdown avec preview live
+- Sélection de catégorie + nom de l’auteur
+- Enregistrement dans Supabase (`courses`)
+
+### 📚 Voir les cours
+- Liste triable et filtrable
+- Vue détaillée + bouton de modification
+
+### 🗂️ Gestion des catégories
+- Ajout / suppression de catégories globales
+
+### 👤 Profil collaborateur
+- Modification de son `display_name`, `bio`, lien GitHub
+- Upload avatar personnalisé (Supabase Storage)
+- Avatar visible automatiquement dans la **sidebar**
+
+### 🤖 Résumé IA (facultatif)
+- Génération automatique de résumé via modèle `distilbart-cnn-12-6`
+- Bouton intégré dans la page cours
+
+...
+
+## 🧪 Tests & couverture
+
+- 📁 `tests/` contient des tests unitaires pour :
+  - Chargement de la config Supabase
+  - Création des clients (`anon` et `service`)
+  - Fonction `get_profile()`
+- ✅ Compatible `pytest`
+
+```bash
+pytest
+```
+---
+
+## ☁️ Déploiement
+
+### 🌌 Compatible avec :
+- Streamlit Cloud
+- Render / Railway / Heroku
+- Docker
+
+### Variables à configurer dans l’environnement :
+```env
+SUPABASE_URL=...
+SUPABASE_ANON_KEY=...
+SUPABASE_SERVICE_ROLE_KEY=...
+```
+
+### Supabase à préparer
+- Table `profiles` avec colonnes : `id`, `role`, `display_name`, `bio`, `github_url`, `avatar_url`
+- Bucket public `avatars`
+- Règles RLS : INSERT, UPDATE, SELECT autorisés pour `authenticated`
+
+---
+
+## 📦 Dépendances principales
+
+- `streamlit`
+- `supabase`
+- `python-dotenv`
+- `pytest`
+- `uuid`
+- `markdown2`
+- `Pillow` (si resize avatar)
+
+---
+
+
 ## 🧑‍💻 Contribution
 
 1. Fork du repo
@@ -128,32 +229,6 @@ edustream/
 
 ---
 
-## ☁️ Déploiement
-
-### 🌌 Compatible avec :
-- Streamlit Cloud
-- Render / Railway / Heroku
-- Docker
-
-Clés à configurer dans l’environnement :
-```
-SUPABASE_URL=...
-SUPABASE_ANON_KEY=...
-SUPABASE_SERVICE_ROLE_KEY=...
-```
-
----
-
-## 📦 Dépendances principales
-
-- `streamlit`
-- `supabase`
-- `python-dotenv`
-- `pytest`
-- `uuid`
-- `markdown2`
-
----
 
 ## 🌍 Pour aller plus loin
 - Ajout de **badges de contributeurs**

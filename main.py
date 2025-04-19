@@ -1,4 +1,3 @@
-# ✅ La config DOIT être la première commande Streamlit
 import os
 os.environ["PYTORCH_JIT"] = "0"
 
