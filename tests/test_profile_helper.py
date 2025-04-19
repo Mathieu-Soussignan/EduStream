@@ -1,6 +1,5 @@
 import pytest
 
-
 # on teste la logique de get_profile sans Supabase réel
 def test_get_profile_empty(monkeypatch):
     # créer un faux resp.data vide

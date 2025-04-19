@@ -12,4 +12,4 @@ jobs:
           python-version: "3.11"
       - run: pip install --upgrade pip
       - run: pip install -r requirements.txt
-      - run: pytest --maxfail=1 --disable-warnings -q
+      - run: export PYTHONPATH=$PWD && pytest --maxfail=1 --disable-warnings -q
