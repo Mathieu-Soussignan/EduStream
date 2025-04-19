@@ -40,7 +40,8 @@ avatar_url = st.session_state.get("avatar_url", "")
 avatar_display = avatar_url or "https://placehold.co/64x64?text=👤"
 
 with st.sidebar:
-    st.image(avatar_display, width=64, caption=user.email)
+    st.image(avatar_display, width=64)
+    st.markdown(f"**{user.email}**")
     st.markdown(f"🔑 rôle : **{user_role}**")
 
     if st.button("🚪 Se déconnecter"):

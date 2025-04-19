@@ -6,10 +6,10 @@ from supabase import create_client
 # ── ENV & CLIENT ───────────────────────────────────────────────────────────
 load_dotenv()
 SUPABASE_URL = os.getenv("SUPABASE_URL")
-SUPABASE_KEY = os.getenv("SUPABASE_KEY")
+SUPABASE_ANON_KEY = os.getenv("SUPABASE_ANON_KEY")
 SITE_URL     = os.getenv("SITE_URL", "http://localhost:8501")
 
-supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
+supabase = create_client(SUPABASE_URL, SUPABASE_ANON_KEY)
 
 # ── PAGE LOGIN / SIGNUP ────────────────────────────────────────────────────
 def login_page() -> None:
