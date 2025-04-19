@@ -7,9 +7,10 @@ from supabase import create_client
 load_dotenv()
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_ANON_KEY = os.getenv("SUPABASE_ANON_KEY")
-SITE_URL     = os.getenv("SITE_URL", "http://localhost:8501")
+SITE_URL = os.getenv("SITE_URL", "http://localhost:8501")
 
 supabase = create_client(SUPABASE_URL, SUPABASE_ANON_KEY)
+
 
 # ── PAGE LOGIN / SIGNUP ────────────────────────────────────────────────────
 def login_page() -> None:
@@ -34,8 +35,8 @@ def login_page() -> None:
 
                 # 2️⃣  Stock session auth
                 st.session_state.authenticated = True
-                st.session_state.user          = result.user
-                st.session_state.token         = result.session.access_token
+                st.session_state.user = result.user
+                st.session_state.token = result.session.access_token
 
                 # 3️⃣  Rôle & profil (robuste)
                 resp = (
@@ -57,9 +58,9 @@ def login_page() -> None:
                     }
                     supabase.table("profiles").insert(profile).execute()
 
-                st.session_state.user_role     = profile["role"]
-                st.session_state.display_name  = profile.get("display_name", "")
-                st.session_state.avatar_url    = profile.get("avatar_url", "")
+                st.session_state.user_role = profile["role"]
+                st.session_state.display_name = profile.get("display_name", "")
+                st.session_state.avatar_url = profile.get("avatar_url", "")
 
                 st.success("Connexion réussie ✅")
                 st.rerun()
@@ -70,7 +71,7 @@ def login_page() -> None:
     # ── Création de compte ────────────────────────────────────────────────
     with tab_signup:
         email = st.text_input("Email", key="signup_email")
-        pwd   = st.text_input("Mot de passe", type="password", key="signup_pwd")
+        pwd = st.text_input("Mot de passe", type="password", key="signup_pwd")
 
         if st.button("Créer un compte"):
             try:
@@ -88,11 +89,13 @@ def login_page() -> None:
             except Exception as e:
                 st.error(f"❌ Erreur d'inscription : {e}")
 
+
 # ── LOGOUT ────────────────────────────────────────────────────────────────
 def logout() -> None:
     for key in ["authenticated", "user", "token"]:
         st.session_state.pop(key, None)
     st.rerun()
+
 
 # ── CHECK SESSION ─────────────────────────────────────────────────────────
 def check_session() -> bool:
