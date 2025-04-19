@@ -1,22 +1,31 @@
+import sys
 import pytest
+import importlib
+from unittest.mock import MagicMock
 
-# on teste la logique de get_profile sans Supabase réel
+
 def test_get_profile_empty(monkeypatch):
-    # créer un faux resp.data vide
+    # ⛔️ on mocke le module utils AVANT d'importer profile_page
+    sys.modules["utils"] = MagicMock()
+
+    # créer un faux client avec une table qui retourne rien
     class FakeTable:
         def select(self, *args): return self
         def eq(self, *args): return self
         def execute(self):
             class R: data = []
             return R()
-    fake_db = type("DB", (), {"table": lambda self, t: FakeTable()})()
+    fake_db = type("FakeClient", (), {"table": lambda self, name: FakeTable()})()
 
-    from app.profile_page import get_profile
-    # monkeypatch le client global
-    import app.profile_page as mod
-    monkeypatch.setattr(mod, "db", fake_db)
+    # on force utils.get_anon_client() à renvoyer notre fake
+    sys.modules["utils.supabase_client"] = MagicMock(get_anon_client=lambda: fake_db)
 
-    profile = get_profile("any-id")
-    # sans ligne en base, on attend un dict vierge avec role = user
+    # importer après avoir patché
+    sys.modules.pop("app.profile_page", None)
+    profile_module = importlib.import_module("app.profile_page")
+
+    profile = profile_module.get_profile("any-user-id")
+
+    assert isinstance(profile, dict)
     assert profile["role"] == "user"
-    assert profile["display_name"] == ""
+    assert profile["avatar_url"] == ""
