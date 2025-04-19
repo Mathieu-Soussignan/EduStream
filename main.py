@@ -36,13 +36,16 @@ if not check_session():
 user = st.session_state.get("user")
 user_role = st.session_state.get("user_role", "user")
 
-st.sidebar.markdown(
-    f"👤 **{user.email}**  \n"
-    f"🔑 rôle : **{user_role}**"
-)
+# Avatar ou placeholder
+avatar_url = st.session_state.get("avatar_url", "")
+avatar_display = avatar_url or "https://placehold.co/64x64?text=👤"
 
-if st.sidebar.button("🚪 Se déconnecter"):
-    logout()
+with st.sidebar:
+    st.image(avatar_display, width=64, caption=user.email)
+    st.markdown(f"🔑 rôle : **{user_role}**")
+
+    if st.button("🚪 Se déconnecter"):
+        logout()
 
 # ────────────────────────────────────────────────────────────────────────────────
 # NAVIGATION
