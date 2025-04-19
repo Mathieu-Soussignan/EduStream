@@ -1,11 +1,11 @@
 # 🎓 EduStream – Plateforme collaborative de cours IA
 
-**EduStream** est une application Streamlit pensée pour les étudiants en data et IA, afin de centraliser, partager et modifier les cours facilement.  
-📚 Ajoute tes cours, consulte ceux de ta promo, gère les catégories, le tout dans une interface moderne et collaborative.
+**EduStream** est une application Streamlit connectée à Supabase, pensée pour les étudiants en data et IA, afin de centraliser, partager et modifier les cours facilement.  
+📚 Ajoute tes cours, consulte ceux de ta promo, gère les catégories et personnalise ton profil collaborateur, dans une interface moderne et collaborative.
 
 ---
 
-## 🧭 Sommaire
+## 🧱 Sommaire
 
 - [🚀 Installation locale](#-installation-locale)
 - [🐳 Utilisation avec Docker](#-utilisation-avec-docker)
@@ -52,8 +52,10 @@ docker-compose up --build
 
 > Accès à l’app : [http://localhost:8501](http://localhost:8501)
 
-### 2. Où sont stockées les données ?
-Tous les cours et fichiers sont persistés dans le dossier local `./data`.
+### 2. Données persistées
+- Les **cours** sont stockés dans Supabase (table `courses`).
+- Les **profils utilisateurs** sont dans la table `profiles`.
+- Les **avatars** sont sauvegardés dans le bucket `avatars` de Supabase Storage.
 
 ---
 
@@ -64,99 +66,102 @@ edustream/
 ├── app/
 │   ├── add_cours.py              # Ajout et modification de cours
 │   ├── manage_categories.py      # Gestion des catégories
-│   ├── view_cours.py             # Affichage et filtrage des cours
-│   └── auth.py                   # (En option) Authentification Supabase
+│   ├── view_cours.py             # Affichage et détail des cours
+│   └── profile_page.py           # Page profil collaborateur
 ├── utils/
-│   ├── file_operations.py        # Lecture/écriture fichiers cours
-│   ├── metadata_operations.py    # Manipulation des métadonnées
-│   └── markdown_renderer.py      # Rendu du markdown
-├── data/
-│   ├── cours/                    # Contenu des cours (fichiers Markdown)
-│   └── metadata.json             # Infos sur chaque cours
+│   ├── supabase_client.py        # Connexion Supabase et clients API
+│   └── profile_helper.py         # Fonctions de manipulation des profils
+├── tests/                        # Tests unitaires Pytest
 ├── assets/
 │   └── home_ai.jpg               # Image d'accueil
-├── main.py                       # Point d’entrée de l’application
+├── .env                          # Clés Supabase locales
+├── main.py                       # Entrée principale de l'app Streamlit
+├── requirements.txt
 ├── Dockerfile
 ├── docker-compose.yml
-├── requirements.txt
 └── .streamlit/
-    └── config.toml               # Thème et config globale
+    └── config.toml            # Thème et config UI Streamlit
 ```
 
 ---
 
 ## ✨ Fonctionnalités
 
-### 🏠 Page d’Accueil
-- Vue d’introduction
-- Objectif de la plateforme
-- Image illustrative
+### 🏠 Accueil
+- Vue d’introduction + image + rappel des objectifs
 
 ### 📘 Ajouter un cours
-- Formulaire avec :
-  - Titre
-  - Catégorie
-  - Contenu en Markdown
-  - Nom/email du contributeur
-- ✅ **Aperçu en temps réel**
-- 📅 Sauvegarde automatique du fichier et des métadonnées
+- Titre, contenu markdown, catégorie, auteur
+- Aperçu live du contenu
+- Sauvegarde vers Supabase
 
 ### 📚 Voir les cours
-- 🔎 **Recherche par mot-clé**
-- 📁 Filtrage par catégorie
-- 📄 Accès aux détails d’un cours
-- ✏️ **Bouton de modification rapide**
+- Liste de tous les cours ajoutés par les utilisateurs
+- Filtres par catégorie + recherche texte
+- Accès à la fiche détaillée d’un cours
+- 🔄 Possibilité de modifier le contenu d'un cours
 
 ### 🗂️ Gérer les catégories
-- Ajout/suppression de catégories utilisées pour organiser les cours
+- Ajout/suppression dynamique
+- Utilisé dans le formulaire d’ajout de cours
+
+### 👤 Profil collaborateur
+- Modification du nom affiché, bio, lien GitHub
+- Upload d’un avatar personnalisé (Stocké dans Supabase Storage)
+- 🚀 L’avatar est affiché automatiquement dans la sidebar de l’utilisateur connecté
 
 ---
 
 ## 🧑‍💻 Contribution
 
-### Étapes pour contribuer :
 1. Fork du repo
-2. Création d’une branche :
+2. Crée une branche :
    ```bash
-   git checkout -b ma-branche
+   git checkout -b feat/ma-nouvelle-fonctionnalite
    ```
-3. Commit :
+3. Fait tes modifications
+4. Commit :
    ```bash
-   git commit -m "✨ Ajout fonctionnalité de recherche"
+   git commit -m "feat: ajout avatar dans la sidebar"
    ```
-4. Push :
-   ```bash
-   git push origin ma-branche
-   ```
-5. Ouvre une **Pull Request**
+5. Push & Pull Request
 
 ---
 
 ## ☁️ Déploiement
 
-L'application peut être facilement déployée via :
-- **Streamlit Community Cloud**
-- **Render / Heroku / Railway**
-- **Docker (recommandé pour usage local collaboratif)**
+### 🌌 Compatible avec :
+- Streamlit Cloud
+- Render / Railway / Heroku
+- Docker
+
+Clés à configurer dans l’environnement :
+```
+SUPABASE_URL=...
+SUPABASE_ANON_KEY=...
+SUPABASE_SERVICE_ROLE_KEY=...
+```
 
 ---
 
 ## 📦 Dépendances principales
 
-- `streamlit` – UI simple et interactive
-- `markdown2` – Rendu Markdown
-- `watchdog` – Suivi de fichiers (facultatif)
-- `python-dotenv` – Chargement des variables d’environnement
+- `streamlit`
+- `supabase`
+- `python-dotenv`
+- `pytest`
+- `uuid`
+- `markdown2`
 
 ---
 
-## 🚧 Fonctionnalités prévues / à réactiver
-- 🔐 Authentification via Supabase (GitHub / Email)
-- 🤖 Résumé automatique avec IA
-- 👤 Page profil collaborateur
+## 🌍 Pour aller plus loin
+- Ajout de **badges de contributeurs**
+- IA : **résumé automatique** de contenu de cours
+- Statistiques de contribution (cours ajoutés, modifiés)
 
 ---
 
 ## 💬 Contact
-Tu veux proposer des idées ou aider à améliorer l’app ?  
-**Ping moi sur Discord !** 👉 _@mathieu_
+Un bug, une idée ?
+**Contacte-moi sur Discord** → dhahaka
