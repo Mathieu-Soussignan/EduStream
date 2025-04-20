@@ -5,6 +5,10 @@ on: [push, pull_request]
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      SUPABASE_URL: "https://fake.supabase.co"
+      SUPABASE_ANON_KEY: "anon-key"
+      SUPABASE_SERVICE_ROLE_KEY: "service-key"
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
