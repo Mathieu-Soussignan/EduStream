@@ -1,9 +1,6 @@
-from unittest.mock import MagicMock, patch
 import streamlit as st
 import pytest
 from app import profile_page
-
-from app.profile_page import get_profile
 
 
 def test_get_profile_empty(monkeypatch):
@@ -42,9 +39,15 @@ def test_get_profile_found(monkeypatch):
 
     fake_db = type("DB", (), {"table": lambda self, t: FakeTable()})()
 
-    monkeypatch.setattr(profile_page, "db", fake_db)
-    result = profile_page.get_profile("123")
+    # Patch AVANT import réel
+    monkeypatch.setattr("app.profile_page.get_anon_client", lambda: fake_db)
 
+    # ⏪ Re-import du module après le patch
+    import importlib
+    from app import profile_page
+    importlib.reload(profile_page)
+
+    result = profile_page.get_profile("123")
     assert result["display_name"] == "Toto"
 
 
