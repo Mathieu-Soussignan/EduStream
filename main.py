@@ -6,7 +6,8 @@ import streamlit as st
 from app.add_cours import add_course_page
 from app.view_cours import view_courses_page, view_course_detail_page
 from app.manage_categories import manage_categories_page
-from app.auth_supabase import login_page, logout, check_session
+from app.login import login_page
+from app.auth_supabase import logout, check_session
 from app.profile_page import profile_page
 
 # ────────────────────────────────────────────────────────────────────────────────
@@ -38,6 +39,8 @@ user_role = st.session_state.get("user_role", "user")
 # Avatar ou placeholder
 avatar_url = st.session_state.get("avatar_url", "")
 avatar_display = avatar_url or "https://placehold.co/64x64?text=👤"
+
+print("🖼️ Avatar affiché :", st.session_state.get("avatar_url"))
 
 with st.sidebar:
     st.image(avatar_display, width=64)
