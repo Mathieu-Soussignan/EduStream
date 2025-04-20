@@ -10,6 +10,11 @@ from app.login import login_page
 from app.auth_supabase import logout, check_session
 from app.profile_page import profile_page
 
+import sys
+
+# Ignore les modules problématiques pour le watcher Streamlit
+sys.modules["torch.classes"] = None
+
 # ────────────────────────────────────────────────────────────────────────────────
 # CONFIG STREAMLIT
 # ────────────────────────────────────────────────────────────────────────────────
@@ -65,9 +70,14 @@ page = st.sidebar.radio(
     ],
 )
 
-# Réinitialisation d’éventuels états internes
-st.session_state.pop("page", None)
-st.session_state.pop("selected_course", None)
+# NAVIGATION LATERALE : si on change de page via la sidebar, on réinitialise
+if "last_nav" not in st.session_state:
+    st.session_state.last_nav = page
+
+if st.session_state.last_nav != page:
+    st.session_state.page = None
+    st.session_state.selected_course = None
+    st.session_state.last_nav = page
 
 # ────────────────────────────────────────────────────────────────────────────────
 # PAGES PRINCIPALES
