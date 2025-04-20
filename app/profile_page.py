@@ -8,6 +8,7 @@ db = get_anon_client()
 storage = get_service_client()
 PROFILE_BUCKET = "avatars"
 
+
 @st.cache_data(ttl=60)
 def get_profile(user_id: str) -> dict:
     resp = (
@@ -79,5 +80,5 @@ def profile_page() -> None:
         st.session_state.avatar_url = new_avatar_url
         st.cache_data.clear()
         st.toast("🔥 Avatar enregistré avec succès !", icon="🎉")
-        with st.expander("💫 Voir le résultat ?"):
+        with st.expander("Voir le résultat ?"):
             st.image("https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZG42c3ZxMGhtMGt6cTJvZXY0cXRnMTB2cHJyZHR5N3kycmloajgzeCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/3o7abB06u9bNzA8lu8/giphy.gif")
