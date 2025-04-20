@@ -5,3 +5,4 @@ test.py
 archives/
 reminder_ping_supabase.py
 cron_rappel.log
+.streamlit/secrets.toml
