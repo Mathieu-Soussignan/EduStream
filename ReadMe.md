@@ -7,17 +7,17 @@
 
 ## 🧱 Sommaire
 
-- [🚀 Installation locale](#-installation-locale)
-- [🐳 Utilisation avec Docker](#-utilisation-avec-docker)
+- [Installation locale](#-installation-locale)
+- [Utilisation avec Docker](#-utilisation-avec-docker)
 - [📂 Structure du projet](#-structure-du-projet)
-- [✨ Fonctionnalités](#-fonctionnalités)
-- [🧑‍💻 Contribution](#-contribution)
-- [☁️ Déploiement](#-déploiement)
-- [📦 Dépendances](#-dépendances)
+- [Fonctionnalités](#-fonctionnalités)
+- [Contribution](#-contribution)
+- [Déploiement](#-déploiement)
+- [Dépendances](#-dépendances)
 
 ---
 
-## 🚀 Installation locale
+## Installation locale
 
 ### 1. Clone du repo
 ```bash
@@ -53,7 +53,7 @@ streamlit run main.py
 
 ---
 
-## 🐳 Utilisation avec Docker
+## Utilisation avec Docker
 
 ### 1. Lancement avec Docker Compose
 ```bash
@@ -109,34 +109,34 @@ edustream/
 
 ---
 
-## ✨ Fonctionnalités
+## Fonctionnalités
 
-### 🏠 Accueil
+### Accueil
 - Vue d’introduction + image + rappel des objectifs
 
-### 📘 Ajouter un cours
+### Ajouter un cours
 - Titre, contenu markdown, catégorie, auteur
 - Aperçu live du contenu
 - Sauvegarde vers Supabase
 
-### 📚 Voir les cours
+### Voir les cours
 - Liste de tous les cours ajoutés par les utilisateurs
 - Filtres par catégorie + recherche texte
 - Accès à la fiche détaillée d’un cours
 - 🔄 Possibilité de modifier le contenu d'un cours
 
-### 🗂️ Gérer les catégories
+### Gérer les catégories
 - Ajout/suppression dynamique
 - Utilisé dans le formulaire d’ajout de cours
 
-### 👤 Profil collaborateur
+### Profil collaborateur
 - Modification du nom affiché, bio, lien GitHub
 - Upload d’un avatar personnalisé (Stocké dans Supabase Storage)
-- 🚀 L’avatar est affiché automatiquement dans la sidebar de l’utilisateur connecté
+- L’avatar est affiché automatiquement dans la sidebar de l’utilisateur connecté
 
 ---
 
-## ✨ Fonctionnalités principales
+## Fonctionnalités principales
 
 ### 🔐 Authentification (Supabase)
 - Inscription / Connexion par email
@@ -166,7 +166,7 @@ edustream/
 
 ...
 
-## 🧪 Tests & couverture
+## Tests & couverture
 
 - 📁 `tests/` contient des tests unitaires pour :
   - Chargement de la config Supabase
@@ -181,7 +181,7 @@ pytest
 
 ## ☁️ Déploiement
 
-### 🌌 Compatible avec :
+### Compatible avec :
 - Streamlit Cloud
 - Render / Railway / Heroku
 - Docker
@@ -200,7 +200,7 @@ SUPABASE_SERVICE_ROLE_KEY=...
 
 ---
 
-## 📦 Dépendances principales
+## Dépendances principales
 
 - `streamlit`
 - `supabase`
@@ -213,7 +213,7 @@ SUPABASE_SERVICE_ROLE_KEY=...
 ---
 
 
-## 🧑‍💻 Contribution
+## Contribution
 
 1. Fork du repo
 2. Crée une branche :
@@ -230,7 +230,7 @@ SUPABASE_SERVICE_ROLE_KEY=...
 ---
 
 
-## 🌍 Pour aller plus loin
+## Pour aller plus loin
 - Ajout de **badges de contributeurs**
 - IA : **résumé automatique** de contenu de cours
 - Statistiques de contribution (cours ajoutés, modifiés)
