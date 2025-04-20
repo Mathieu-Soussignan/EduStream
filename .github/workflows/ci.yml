@@ -1,0 +1,15 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+      - run: pip install --upgrade pip
+      - run: pip install -r requirements.txt
+      - run: export PYTHONPATH=$PWD && pytest --maxfail=1 --disable-warnings -q
