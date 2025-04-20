@@ -21,14 +21,14 @@
 
 ### 1. Clone du repo
 ```bash
-git clone https://github.com/TON_USER/edustream.git
+git clone https://github.com/Mathieu-Soussignan/edustream.git
 cd edustream
 ```
 
 ### 2. Création de l'environnement virtuel
 ```bash
 python -m venv .venv
-source .venv/bin/activate  # ou .venv\Scripts\activate sous Windows
+source .venv/bin/activate  # ou source .venv/Scripts/activate sous Windows
 ```
 
 ### 3. Installation des dépendances

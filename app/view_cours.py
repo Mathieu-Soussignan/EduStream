@@ -41,10 +41,14 @@ def view_courses_page():
                 st.session_state.page = "Voir le cours en détail"
 
 def view_course_detail_page():
+    # 🔒 Vérifie que l’ID du cours est bien défini
     print("🚀 Chargement de la page détail du cours")
-    if "selected_course" not in st.session_state:
+    if "selected_course" not in st.session_state or st.session_state.selected_course is None:
         st.error("Aucun cours sélectionné.")
         return
+
+    # 🔁 Assure que la page actuelle est bien la bonne
+    st.session_state.page = "Voir le cours en détail"
 
     course_id = st.session_state.selected_course
     course = get_course_by_id(course_id)
@@ -59,15 +63,27 @@ def view_course_detail_page():
 
         print(f"🧪 Longueur du contenu : {len(course['contenu'].strip())}")
 
+        # Initialiser le flag pour le résumé
+        if "generate_summary" not in st.session_state:
+            st.session_state.generate_summary = False
+
         if len(course["contenu"].strip()) > 80:
-            if st.button("🧠 Générer un résumé automatique"):
-                print("🧠 Bouton de génération cliqué !")
+            if not st.session_state.generate_summary:
+                if st.button("🧠 Générer un résumé automatique"):
+                    print("🧠 Bouton de génération cliqué !")
+                    st.session_state.generate_summary = True
+                    st.rerun()
+            else:
                 with st.spinner("Chargement du modèle et génération du résumé..."):
                     model = ia_summary_agent.load_summary_model()
                     summary = ia_summary_agent.summarize(course["contenu"], model)
                     print("📝 Résumé généré :", summary)
                     st.markdown("### 📝 Résumé généré par l'IA :")
                     st.success(summary)
+
+                if st.button("↩️ Réinitialiser le résumé"):
+                    st.session_state.generate_summary = False
+                    st.rerun()
         else:
             st.info("📄 Le contenu est trop court pour être résumé automatiquement.")
 
