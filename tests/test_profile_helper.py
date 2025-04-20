@@ -1,6 +1,7 @@
 from unittest.mock import MagicMock, patch
 import streamlit as st
 import pytest
+from app import profile_page
 
 from app.profile_page import get_profile
 
@@ -40,8 +41,10 @@ def test_get_profile_found(monkeypatch):
             return R()
 
     fake_db = type("DB", (), {"table": lambda self, t: FakeTable()})()
-    monkeypatch.setattr("app.profile_page.db", fake_db)
-    result = get_profile("123")
+
+    monkeypatch.setattr(profile_page, "db", fake_db)
+    result = profile_page.get_profile("123")
+
     assert result["display_name"] == "Toto"
 
 
