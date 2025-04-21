@@ -92,9 +92,9 @@ edustream/
 ├── tests/                     # Tests unitaires (pytest)
 ├── utils/                     # Clients Supabase et fonctions utilitaires
 │   ├── file_operations.py
-│   └── ia_summary_agent.py
-│   └── ia_summary_utils.py
-│   └── markdown_renderer.py
+│   ├── ia_summary_agent.py
+│   ├── ia_summary_utils.py
+│   ├── markdown_renderer.py
 │   ├── metadata_operations.py
 │   ├── supabase_client.py
 │   ├── supabase_operations.py
