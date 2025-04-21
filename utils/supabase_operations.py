@@ -79,7 +79,7 @@ def add_category_to_db(nom):
 
 def delete_category_from_db(category_id):
     try:
-        response = supabase.table("categories").delete().eq("id", category_id).execute() # noqa
+        response = supabase.table("categories").delete().eq("id", category_id).execute()
         return response
     except Exception as e:
         return {"error": str(e)}
