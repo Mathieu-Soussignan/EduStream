@@ -2,12 +2,16 @@ import textwrap
 
 def load_summary_model():
     """
-    Charge dynamiquement le pipeline de summarization pour éviter les conflits 
-    avec le watcher Streamlit au démarrage.
+    Modèle français T5 fine-tuné pour le résumé (CNN/DM FR).
+    Meilleure stabilité et pertinence sur des contenus pédagogiques.
     """
-    print("🚀 Chargement du modèle Hugging Face...")
-    from transformers import pipeline
-    return pipeline("summarization", model="sshleifer/distilbart-cnn-12-6")
+    from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, pipeline
+
+    model_name = "plguillou/t5-base-fr-sum-cnndm"
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
+
+    return pipeline("summarization", model=model, tokenizer=tokenizer)
 
 
 def split_text(text, max_chunk_length=1000):

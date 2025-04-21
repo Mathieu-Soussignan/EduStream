@@ -87,3 +87,5 @@ uv==0.6.10
 websockets==14.2
 yarl==1.18.3
 streamlit-ace
+transformers>=4.30
+sentencepiece>=0.1.99
